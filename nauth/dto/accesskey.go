@@ -1,7 +1,7 @@
 package dto
 
 import (
-	"github.com/netkitcloud/sdk-go/common"
+	"github.com/RichXan/sdk-go/common"
 )
 
 type AccessKey struct {

@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/netkitcloud/sdk-go/common"
-	"github.com/netkitcloud/sdk-go/nauth/dto"
+	"github.com/RichXan/sdk-go/common"
+	"github.com/RichXan/sdk-go/nauth/dto"
 )
 
 func (c *AuthenticationClient) UsernameLogin(login *dto.UsernameLoginDto) (*dto.User, error) {

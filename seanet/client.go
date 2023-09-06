@@ -1,4 +1,4 @@
-package nip
+package seanet
 
 import (
 	"bytes"
@@ -20,25 +20,19 @@ import (
 	"github.com/valyala/fastjson"
 )
 
-type NIPClient struct {
-	options  *NIPClientOptions
-	validate *validator.Validate
+type SeanetClient struct {
+	validate    *validator.Validate
+	options     *SeanetClientOptions
+	AccessToken string
 }
 
-type NIPClientOptions struct {
+type SeanetClientOptions struct {
 	Host         string
 	AccessKey    string
 	AccessSecret string
-	ProjectKey   string
 }
 
-const (
-	ClientSecretPost  = "client_secret_post"
-	ClientSecretBasic = "client_secret_basic"
-	None              = "none"
-)
-
-func NewClient(options *NIPClientOptions) (*NIPClient, error) {
+func NewClient(options *SeanetClientOptions) (*SeanetClient, error) {
 	if options.Host == "" {
 		options.Host = CoreAuthApiHost
 	}
@@ -51,18 +45,18 @@ func NewClient(options *NIPClientOptions) (*NIPClient, error) {
 		return nil, errors.New("accesssecret is required")
 	}
 
-	if options.ProjectKey == "" {
-		return nil, errors.New("projectkey is required")
-	}
-
 	validate := validator.New()
-	return &NIPClient{
+	return &SeanetClient{
 		options:  options,
 		validate: validate,
 	}, nil
 }
 
-func (c *NIPClient) responseError(body []byte) error {
+func (c *SeanetClient) SetToken(token string) {
+	c.AccessToken = token
+}
+
+func (c *SeanetClient) responseError(body []byte) error {
 	var p fastjson.Parser
 	v, err := p.Parse(string(body))
 	if err != nil {
@@ -80,7 +74,7 @@ func (c *NIPClient) responseError(body []byte) error {
 	return nil
 }
 
-func (c *NIPClient) SendHttpRequest(requestUrl string, method string, reqDto interface{}) ([]byte, error) {
+func (c *SeanetClient) SendHttpRequest(requestUrl string, method string, reqDto interface{}) ([]byte, error) {
 	data, _ := json.Marshal(&reqDto)
 
 	req, err := http.NewRequest(method, c.options.Host+requestUrl, nil)
@@ -92,8 +86,8 @@ func (c *NIPClient) SendHttpRequest(requestUrl string, method string, reqDto int
 		req.Header.Add("Content-Type", "application/json;charset=UTF-8")
 	}
 
-	if len(c.options.ProjectKey) > 0 {
-		req.Header.Add("x-nip-project", c.options.ProjectKey)
+	if len(c.AccessToken) > 0 {
+		req.Header.Add("Authorization", c.AccessToken)
 	}
 
 	for key, value := range commonHeaders {
@@ -147,7 +141,7 @@ func (c *NIPClient) SendHttpRequest(requestUrl string, method string, reqDto int
 	resp.Body.Close()
 
 	if resp.StatusCode != 200 {
-		return nil, errors.New("http status: " + strconv.FormatInt(int64(resp.StatusCode), 10))
+		return nil, errors.New("http status: " + strconv.FormatInt(int64(resp.StatusCode), 10) + " body: " + string(body))
 	}
 
 	return body, nil

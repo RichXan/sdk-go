@@ -10,7 +10,7 @@ import (
 
 	"net/http"
 
-	"github.com/netkitcloud/sdk-go/nauth/dto"
+	"github.com/RichXan/sdk-go/nauth/dto"
 
 	"github.com/valyala/fastjson"
 )

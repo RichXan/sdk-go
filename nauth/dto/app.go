@@ -1,6 +1,6 @@
 package dto
 
-import "github.com/netkitcloud/sdk-go/common"
+import "github.com/RichXan/sdk-go/common"
 
 type AddAppDto struct {
 	Name   string   `json:"name"`

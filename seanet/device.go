@@ -1,4 +1,4 @@
-package nip
+package seanet
 
 import (
 	"encoding/json"
@@ -7,16 +7,13 @@ import (
 	"net/http"
 
 	"github.com/RichXan/sdk-go/common"
-	"github.com/RichXan/sdk-go/nip/dto"
+	"github.com/RichXan/sdk-go/seanet/dto"
 	"github.com/valyala/fastjson"
 )
 
-func (c *NIPClient) CreateDevice(dto *dto.CreateDeviceDto) (*dto.Device, error) {
-	if err := c.validate.Struct(dto); err != nil {
-		return nil, err
-	}
-
-	body, err := c.SendHttpRequest(apiDevice, http.MethodPost, dto)
+func (c *SeanetClient) GetDevice(sn string) (*dto.Device, error) {
+	uri := fmt.Sprintf(apiModifyDevice, sn)
+	body, err := c.SendHttpRequest(uri, http.MethodGet, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -24,27 +21,13 @@ func (c *NIPClient) CreateDevice(dto *dto.CreateDeviceDto) (*dto.Device, error) 
 	return c.responseDevice(body)
 }
 
-func (c *NIPClient) GetDevice(dto *dto.GetDeviceDto) (*dto.Device, error) {
+func (c *SeanetClient) UpdateDevice(dto *dto.UpdateDeviceDto) (*common.BaseResponse, error) {
 	if err := c.validate.Struct(dto); err != nil {
 		return nil, err
 	}
 
-	uri := fmt.Sprintf(apiModifyDevice, dto.Devicekey)
-	body, err := c.SendHttpRequest(uri, http.MethodGet, dto)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.responseDevice(body)
-}
-
-func (c *NIPClient) DeleteDevice(deviceKey string) (*common.BaseResponse, error) {
-	if deviceKey == "" {
-		return nil, errors.New("deviceKey is required")
-	}
-
-	uri := fmt.Sprintf(apiModifyDevice, deviceKey)
-	body, err := c.SendHttpRequest(uri, http.MethodDelete, nil)
+	uri := fmt.Sprintf(apiModifyDevice, dto.Sn)
+	body, err := c.SendHttpRequest(uri, http.MethodPut, dto)
 	if err != nil {
 		return nil, err
 	}
@@ -57,21 +40,7 @@ func (c *NIPClient) DeleteDevice(deviceKey string) (*common.BaseResponse, error)
 	return &result, nil
 }
 
-func (c *NIPClient) UpdateDevice(dto *dto.UpdateDeviceDto) (*dto.Device, error) {
-	if err := c.validate.Struct(dto); err != nil {
-		return nil, err
-	}
-
-	uri := fmt.Sprintf(apiModifyDevice, dto.Devicekey)
-	body, err := c.SendHttpRequest(uri, http.MethodPut, dto)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.responseDevice(body)
-}
-
-func (c *NIPClient) ListDevice(pagination common.PaginationParams) (deviceListResp dto.ListDeviceDto, err error) {
+func (c *SeanetClient) ListDevice(pagination common.PaginationParams) (deviceListResp dto.ListDeviceDto, err error) {
 	body, err := c.SendHttpRequest(apiDevice, http.MethodGet, pagination)
 	if err != nil {
 		return
@@ -104,7 +73,7 @@ func (c *NIPClient) ListDevice(pagination common.PaginationParams) (deviceListRe
 	return
 }
 
-func (c *NIPClient) responseDevice(b []byte) (*dto.Device, error) {
+func (c *SeanetClient) responseDevice(b []byte) (*dto.Device, error) {
 	var p fastjson.Parser
 	v, err := p.Parse(string(b))
 	if err != nil {

@@ -11,8 +11,8 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/RichXan/sdk-go/nauth/dto"
 	"github.com/coreos/go-oidc/v3/oidc"
-	"github.com/netkitcloud/sdk-go/nauth/dto"
 )
 
 func (c *AuthenticationClient) getSignature(dto map[string]string) string {

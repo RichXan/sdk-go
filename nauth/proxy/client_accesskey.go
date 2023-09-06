@@ -3,11 +3,11 @@ package proxy
 import (
 	"net/http"
 
+	"github.com/RichXan/sdk-go/common"
+	"github.com/RichXan/sdk-go/nauth"
+	"github.com/RichXan/sdk-go/nauth/dto"
+	"github.com/RichXan/sdk-go/response"
 	"github.com/gin-gonic/gin"
-	"github.com/netkitcloud/sdk-go/common"
-	"github.com/netkitcloud/sdk-go/nauth"
-	"github.com/netkitcloud/sdk-go/nauth/dto"
-	"github.com/netkitcloud/sdk-go/response"
 )
 
 // @description: 创建用户的ak以及备注

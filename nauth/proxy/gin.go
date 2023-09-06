@@ -4,18 +4,14 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/RichXan/sdk-go/nauth"
+	"github.com/RichXan/sdk-go/response"
 	"github.com/gin-gonic/gin"
-	"github.com/netkitcloud/sdk-go/nauth"
-	"github.com/netkitcloud/sdk-go/response"
 )
 
 type Action string
 
 type NormalProxyFunc func(c *gin.Context, cli *nauth.AuthenticationClient)
-
-type ProxyFunc interface {
-	NormalProxyFunc
-}
 
 type ActionFuncMap[KEY Action, VALUE NormalProxyFunc] map[KEY]VALUE
 

@@ -3,7 +3,7 @@ package dto
 import (
 	"time"
 
-	"github.com/netkitcloud/sdk-go/common"
+	"github.com/RichXan/sdk-go/common"
 )
 
 type CreateProductDto struct {

@@ -5,8 +5,8 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/netkitcloud/sdk-go/common"
-	"github.com/netkitcloud/sdk-go/nauth/dto"
+	"github.com/RichXan/sdk-go/common"
+	"github.com/RichXan/sdk-go/nauth/dto"
 
 	"github.com/valyala/fastjson"
 )

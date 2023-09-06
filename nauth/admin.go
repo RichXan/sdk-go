@@ -13,13 +13,13 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/netkitcloud/sdk-go/common"
-	"github.com/netkitcloud/sdk-go/nauth/dto"
+	"github.com/RichXan/sdk-go/common"
+	"github.com/RichXan/sdk-go/nauth/dto"
 )
 
 type AuthenticationAdmin struct {
-	options     *AuthenticationClientOptions
-	ClientUser  *dto.User
+	options    *AuthenticationClientOptions
+	ClientUser *dto.User
 }
 
 func NewAdmin(options *AuthenticationClientOptions) (*AuthenticationAdmin, error) {
@@ -108,7 +108,7 @@ func (c *AuthenticationAdmin) SendHttpRequest(requestUrl string, method string, 
 	resp.Body.Close()
 
 	if resp.StatusCode != 200 {
-		return nil, errors.New("http status: " + strconv.FormatInt(int64(resp.StatusCode), 10))
+		return nil, errors.New("http status: " + strconv.FormatInt(int64(resp.StatusCode), 10) + " body: " + string(body))
 	}
 
 	return body, nil
