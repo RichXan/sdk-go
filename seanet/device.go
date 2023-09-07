@@ -73,6 +73,24 @@ func (c *SeanetClient) ListDevice(pagination common.PaginationParams) (deviceLis
 	return
 }
 
+func (c *SeanetClient) SwitchDevice(param *dto.SwitchDeviceDto) (resp *common.BaseResponse, err error) {
+	if err := c.validate.Struct(param); err != nil {
+		return nil, err
+	}
+
+	body, err := c.SendHttpRequest(apiStatusDevice, http.MethodPost, param)
+	if err != nil {
+		return nil, err
+	}
+
+	var result common.BaseResponse
+	if err := json.Unmarshal(body, &result); err != nil {
+		return nil, err
+	}
+
+	return &result, nil
+}
+
 func (c *SeanetClient) responseDevice(b []byte) (*dto.Device, error) {
 	var p fastjson.Parser
 	v, err := p.Parse(string(b))

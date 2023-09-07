@@ -38,6 +38,15 @@ type QueryDeviceDto struct {
 	Search     string `json:"search" form:"search"`
 }
 
+type SwitchDeviceDto struct {
+	GatewayProductkey string `json:"gateway_product_key"`
+	GatewayDevicekey  string `json:"gateway_devicekey"`
+	Devicekey         string `json:"devicekey"`
+	Type              int   `json:"type"`
+	Status            int   `json:"status"`
+	Endpoint          int   `json:"endpoint"`
+}
+
 type Device struct {
 	Id                     int                      `json:"id"`
 	Sn                     string                   `json:"sn"`
